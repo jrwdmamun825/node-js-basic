@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>hello</h1>
+    <p id="name"></p>
+
+    <div class="container">
+        <div class="row w-25">
+            <input class="form-control" type="text" name="name" id="userName" placeholder="name">
+            <button class="btn btn-primary w-50" onclick="addUser()">add user</button>
+        </div>
+    </div>
+
+    <script>
+        fetch('http://localhost:51100/users/1')
+            .then(resp => resp.json())
+            .then(data => {
+                console.log(data);
+                document.getElementById('name').innerText = data.name;
+            })
+
+        // set input text
+        const addUser = () => {
+            console.log('click');
+            const name = document.getElementById('userName').value;
+            const user = { name}
+            console.log(user);
+            // post 
+            fetch('http://localhost:51100/post', {
+                method: 'POST',
+                body: JSON.stringify(user),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            })
+                .then(res => res.json())
+                .then(data => updateUser(data));
+        };
+
+        const updateUser = (data) => {
+            document.getElementById('name').innerText = data.name;
+        }
+    </script>
+</body>
+
+</html>
